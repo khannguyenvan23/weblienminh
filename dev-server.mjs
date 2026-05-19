@@ -10,6 +10,9 @@ const dataDir = join(root, "data");
 const usersFile = join(dataDir, "users.json");
 const gameAccountsFile = join(dataDir, "game-accounts.json");
 const storeItemsFile = join(dataDir, "store-items.json");
+const databaseUrl = process.env.DATABASE_URL;
+const useDatabase = Boolean(databaseUrl);
+let dbPool;
 const sessions = new Map();
 const types = {
   ".html": "text/html; charset=utf-8",
@@ -17,6 +20,93 @@ const types = {
   ".js": "application/javascript; charset=utf-8",
   ".json": "application/json; charset=utf-8",
 };
+
+async function getDbPool() {
+  if (!useDatabase) {
+    return null;
+  }
+
+  if (!dbPool) {
+    const { Pool } = await import("pg");
+    dbPool = new Pool({
+      connectionString: databaseUrl,
+      ssl: process.env.DATABASE_SSL === "true" ? { rejectUnauthorized: false } : undefined,
+    });
+  }
+
+  return dbPool;
+}
+
+async function query(sql, params = []) {
+  const pool = await getDbPool();
+  return pool.query(sql, params);
+}
+
+async function initDatabase() {
+  if (!useDatabase) {
+    return;
+  }
+
+  await query(`
+    CREATE TABLE IF NOT EXISTS users (
+      id TEXT PRIMARY KEY,
+      username TEXT UNIQUE NOT NULL,
+      email TEXT UNIQUE NOT NULL,
+      salt TEXT NOT NULL,
+      password_hash TEXT NOT NULL,
+      balance INTEGER NOT NULL DEFAULT 0,
+      role TEXT NOT NULL DEFAULT 'Người dùng',
+      zalo TEXT NOT NULL DEFAULT '',
+      line TEXT NOT NULL DEFAULT '',
+      facebook TEXT NOT NULL DEFAULT '',
+      created_at TEXT NOT NULL,
+      updated_at TEXT
+    )
+  `);
+
+  for (const table of ["game_accounts", "store_items"]) {
+    await query(`
+      CREATE TABLE IF NOT EXISTS ${table} (
+        id TEXT PRIMARY KEY,
+        title TEXT NOT NULL,
+        price INTEGER NOT NULL DEFAULT 0,
+        status TEXT NOT NULL DEFAULT 'Đang bán',
+        description TEXT NOT NULL DEFAULT '',
+        secret TEXT NOT NULL DEFAULT '',
+        image TEXT NOT NULL DEFAULT '',
+        gallery TEXT NOT NULL DEFAULT '',
+        content TEXT NOT NULL DEFAULT '',
+        created_at TEXT NOT NULL,
+        updated_at TEXT
+      )
+    `);
+  }
+
+  await seedDatabaseFromJson();
+}
+
+async function seedDatabaseFromJson() {
+  const userCount = Number((await query("SELECT COUNT(*) AS count FROM users")).rows[0].count);
+  if (userCount === 0) {
+    const users = await readJsonFile(usersFile);
+    if (users.length) {
+      await saveUsers(users);
+    }
+  }
+
+  for (const [file, table] of [
+    [gameAccountsFile, "game_accounts"],
+    [storeItemsFile, "store_items"],
+  ]) {
+    const count = Number((await query(`SELECT COUNT(*) AS count FROM ${table}`)).rows[0].count);
+    if (count === 0) {
+      const records = await readJsonFile(file);
+      if (records.length) {
+        await saveCollection(file, records);
+      }
+    }
+  }
+}
 
 async function readJsonBody(request) {
   const chunks = [];
@@ -33,19 +123,15 @@ async function readJsonBody(request) {
 }
 
 async function readUsers() {
-  try {
-    return JSON.parse(await readFile(usersFile, "utf8"));
-  } catch {
-    return [];
+  if (useDatabase) {
+    const result = await query("SELECT * FROM users ORDER BY created_at ASC");
+    return result.rows.map(rowToUser);
   }
+
+  return readJsonFile(usersFile);
 }
 
-async function saveUsers(users) {
-  await mkdir(dataDir, { recursive: true });
-  await writeFile(usersFile, JSON.stringify(users, null, 2), "utf8");
-}
-
-async function readCollection(file) {
+async function readJsonFile(file) {
   try {
     return JSON.parse(await readFile(file, "utf8"));
   } catch {
@@ -53,9 +139,134 @@ async function readCollection(file) {
   }
 }
 
+async function saveUsers(users) {
+  if (useDatabase) {
+    for (const user of users) {
+      await query(
+        `
+          INSERT INTO users (
+            id, username, email, salt, password_hash, balance, role, zalo, line, facebook, created_at, updated_at
+          ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
+          ON CONFLICT (id) DO UPDATE SET
+            username = EXCLUDED.username,
+            email = EXCLUDED.email,
+            salt = EXCLUDED.salt,
+            password_hash = EXCLUDED.password_hash,
+            balance = EXCLUDED.balance,
+            role = EXCLUDED.role,
+            zalo = EXCLUDED.zalo,
+            line = EXCLUDED.line,
+            facebook = EXCLUDED.facebook,
+            updated_at = EXCLUDED.updated_at
+        `,
+        [
+          user.id,
+          user.username,
+          user.email,
+          user.salt,
+          user.passwordHash,
+          user.balance ?? 0,
+          user.role ?? "Người dùng",
+          user.zalo ?? "",
+          user.line ?? "",
+          user.facebook ?? "",
+          user.createdAt ?? new Date().toISOString(),
+          user.updatedAt ?? null,
+        ]
+      );
+    }
+    return;
+  }
+
+  await mkdir(dataDir, { recursive: true });
+  await writeFile(usersFile, JSON.stringify(users, null, 2), "utf8");
+}
+
+async function readCollection(file) {
+  if (useDatabase) {
+    const table = tableForFile(file);
+    const result = await query(`SELECT * FROM ${table} ORDER BY created_at DESC`);
+    return result.rows.map(rowToRecord);
+  }
+
+  return readJsonFile(file);
+}
+
 async function saveCollection(file, records) {
+  if (useDatabase) {
+    const table = tableForFile(file);
+    await query("BEGIN");
+    try {
+      await query(`DELETE FROM ${table}`);
+      for (const record of records) {
+        await query(
+          `
+            INSERT INTO ${table} (
+              id, title, price, status, description, secret, image, gallery, content, created_at, updated_at
+            ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
+          `,
+          [
+            record.id,
+            record.title,
+            Number(record.price ?? 0),
+            record.status ?? "Đang bán",
+            record.description ?? "",
+            record.secret ?? "",
+            record.image ?? "",
+            record.gallery ?? "",
+            record.content ?? "",
+            record.createdAt ?? new Date().toISOString(),
+            record.updatedAt ?? null,
+          ]
+        );
+      }
+      await query("COMMIT");
+    } catch (error) {
+      await query("ROLLBACK");
+      throw error;
+    }
+    return;
+  }
+
   await mkdir(dataDir, { recursive: true });
   await writeFile(file, JSON.stringify(records, null, 2), "utf8");
+}
+
+function tableForFile(file) {
+  return file === gameAccountsFile ? "game_accounts" : "store_items";
+}
+
+function rowToUser(row) {
+  return {
+    id: row.id,
+    username: row.username,
+    email: row.email,
+    salt: row.salt,
+    passwordHash: row.password_hash,
+    balance: row.balance,
+    role: row.role,
+    zalo: row.zalo,
+    line: row.line,
+    facebook: row.facebook,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
+}
+
+function rowToRecord(row) {
+  return {
+    id: row.id,
+    title: row.title,
+    price: row.price,
+    status: row.status,
+    description: row.description,
+    secret: row.secret,
+    image: row.image,
+    gallery: row.gallery,
+    content: row.content,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
 }
 
 function sendJson(response, status, payload, headers = {}) {
@@ -339,6 +550,8 @@ async function handleApi(request, response, url) {
 
   return false;
 }
+
+await initDatabase();
 
 createServer(async (request, response) => {
   const url = new URL(request.url, `http://${request.headers.host}`);
