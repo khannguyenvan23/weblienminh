@@ -86,11 +86,15 @@ async function initDatabase() {
 }
 
 async function seedDatabaseFromJson() {
+  const users = await readJsonFile(usersFile);
   const userCount = Number((await query("SELECT COUNT(*) AS count FROM users")).rows[0].count);
-  if (userCount === 0) {
-    const users = await readJsonFile(usersFile);
-    if (users.length) {
-      await saveUsers(users);
+  if (userCount === 0 && users.length) {
+    await saveUsers(users);
+  } else {
+    const admin = users.find((user) => user.role === "Admin" || user.username === "admin");
+    const adminExists = Number((await query("SELECT COUNT(*) AS count FROM users WHERE role = 'Admin'")).rows[0].count);
+    if (admin && adminExists === 0) {
+      await saveUsers([admin]);
     }
   }
 
@@ -312,6 +316,15 @@ function publicUser(user) {
 }
 
 async function handleApi(request, response, url) {
+  if (url.pathname === "/api/health" && request.method === "GET") {
+    sendJson(response, 200, {
+      ok: true,
+      storage: useDatabase ? "postgresql" : "json",
+      databaseUrl: useDatabase ? "set" : "missing",
+    });
+    return true;
+  }
+
   if (url.pathname === "/api/me" && request.method === "GET") {
     const sid = parseCookies(request).rz_session;
     const userId = sessions.get(sid);
