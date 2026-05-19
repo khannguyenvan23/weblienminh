@@ -1,0 +1,28 @@
+[
+  {
+    "id": "77407f81-4643-4273-8412-188d13fc72b3",
+    "username": "khannguyenvan23",
+    "email": "khannguyenvan23@gmail.com",
+    "salt": "0a54402b326cb574f7be154488ffd375",
+    "passwordHash": "433f40ec2c6060b94a56524599c01dfff2b65afedda07af4a81f64e6f67f3a93",
+    "balance": 0,
+    "role": "Người dùng",
+    "zalo": "",
+    "line": "",
+    "facebook": "",
+    "createdAt": "2026-05-19T05:02:37.180Z"
+  },
+  {
+    "id": "admin-demo-001",
+    "username": "admin",
+    "email": "admin@riftzone.local",
+    "salt": "de08cfe2cb76aea92bf084ced8f72bbd",
+    "passwordHash": "3f20bc289e415832b787ef6abf2b8b96c0a7f734509c9ad3ea6cdfb8dc08ed2c",
+    "balance": 0,
+    "role": "Admin",
+    "zalo": "",
+    "line": "",
+    "facebook": "",
+    "createdAt": "2026-05-19T05:20:00.000Z"
+  }
+]

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chi tiết account | RiftZone Store</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="navbar">
+        <a class="brand" href="/">
+          <span class="brand-logo">RZ</span>
+          <span class="brand-word">
+            <strong>RiftZoneStore</strong>
+            <small>.com</small>
+          </span>
+        </a>
+        <div class="main-menu">
+          <a href="/">Trang chủ</a>
+          <a href="/#accounts">Danh mục⌄</a>
+          <a href="/#services">Hướng dẫn</a>
+        </div>
+        <div class="header-actions">
+          <button class="balance-pill" type="button">0 K</button>
+          <a class="deposit-pill" href="/#account">Nạp</a>
+          <button class="cart-button" type="button" aria-label="Giỏ hàng">🛒</button>
+          <a class="auth-avatar" href="/#account" aria-label="Tài khoản">👤</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="article-page">
+      <a class="detail-back" href="/#accounts">← Quay lại trang chủ</a>
+      <article class="account-article" data-account-article>
+        <div class="article-hero">
+          <img data-article-image src="" alt="" />
+          <span data-article-status>Đang bán</span>
+        </div>
+
+        <div class="article-body">
+          <p class="eyebrow">Bài viết account</p>
+          <h1 data-article-title>Đang tải...</h1>
+          <strong data-article-price>0đ</strong>
+          <p data-article-description></p>
+
+          <div class="detail-info-grid">
+            <div>
+              <span>Mã sản phẩm</span>
+              <strong data-article-code>RZ-0000</strong>
+            </div>
+            <div>
+              <span>Trạng thái</span>
+              <strong data-article-status-text>Đang bán</strong>
+            </div>
+            <div>
+              <span>Bảo hành</span>
+              <strong>Hỗ trợ sau mua</strong>
+            </div>
+          </div>
+
+          <section class="article-content">
+            <h2>Thông tin chi tiết</h2>
+            <div data-article-content></div>
+          </section>
+
+          <section class="article-gallery" data-article-gallery></section>
+
+          <div class="detail-actions">
+            <button class="primary-button" type="button" data-buy-account>Mua tài khoản</button>
+            <button type="button" data-open-detail-login>Đăng nhập để mua</button>
+          </div>
+        </div>
+      </article>
+    </main>
+
+    <dialog class="login-modal" aria-labelledby="detail-login-title">
+      <div class="auth-shell">
+        <button class="close-modal" type="button" aria-label="Đóng" data-close-detail-login>×</button>
+        <h2 id="detail-login-title">Đăng nhập</h2>
+        <form class="auth-form" data-detail-login-form>
+          <label>
+            Email hoặc tên tài khoản
+            <input name="login" type="text" autocomplete="username" placeholder="name@example.com" required />
+          </label>
+          <label>
+            Mật khẩu
+            <input name="password" type="password" autocomplete="current-password" placeholder="••••••••" required />
+          </label>
+          <button class="primary-button" type="submit">Đăng nhập</button>
+        </form>
+        <p class="auth-message" role="status" data-detail-login-message></p>
+      </div>
+    </dialog>
+
+    <script src="account-detail.js"></script>
+  </body>
+</html>

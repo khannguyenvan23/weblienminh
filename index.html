@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RiftZone Store | Shop acc, skin, vật phẩm game</title>
+    <meta
+      name="description"
+      content="Shop acc game, skin, vật phẩm và dịch vụ nạp uy tín với giao diện hiện đại."
+    />
+    <link rel="preconnect" href="https://images.unsplash.com" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="navbar" aria-label="Điều hướng chính">
+        <a class="brand" href="#" aria-label="RiftZone Store">
+          <span class="brand-logo">RZ</span>
+          <span class="brand-word">
+            <strong>RiftZoneStore</strong>
+            <small>.com</small>
+          </span>
+        </a>
+
+        <button class="menu-toggle" aria-expanded="false" aria-controls="main-menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <div class="main-menu" id="main-menu">
+          <a href="#">Trang chủ</a>
+          <a href="#accounts">Danh mục⌄</a>
+          <a href="#services">Hướng dẫn</a>
+        </div>
+
+        <div class="header-actions">
+          <button class="balance-pill" type="button" data-user-balance>0 K</button>
+          <button class="deposit-pill" type="button" data-menu-action="deposit">Nạp</button>
+          <button class="cart-button" type="button" aria-label="Giỏ hàng">🛒</button>
+          <button class="link-button auth-avatar" data-open-login data-auth-label aria-label="Đăng nhập">👤</button>
+          <div class="personal-menu" data-personal-menu hidden>
+            <button class="user-button" type="button" aria-expanded="false" aria-label="Menu cá nhân">
+              <span data-user-initials>U</span>
+            </button>
+
+            <div class="personal-dropdown" data-personal-dropdown>
+              <button type="button" data-menu-action="profile"><span>♙</span>Thông tin tài khoản</button>
+              <button type="button" data-menu-action="deposit"><span>◔</span>Nạp tiền</button>
+              <button type="button" data-menu-action="accounts"><span>⚑</span>Tài khoản đã mua</button>
+              <button type="button" data-menu-action="items"><span>⚐</span>Skin/Vật phẩm đã mua</button>
+              <button type="button" data-menu-action="admin" data-admin-only hidden><span>⚙</span>Quản lý Admin</button>
+              <button class="logout-menu" type="button" data-menu-action="logout"><span>↩</span>Đăng xuất</button>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-media" aria-hidden="true"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <p class="eyebrow">Shop acc game uy tín, giao dịch tự động</p>
+          <h1>RiftZone Store</h1>
+          <p>
+            Chọn nhanh tài khoản, skin và vật phẩm yêu thích với giá rõ ràng,
+            thanh toán tiện lợi và hỗ trợ sau mua.
+          </p>
+          <form class="hero-search" role="search">
+            <input type="search" placeholder="Tìm acc, skin, rank hoặc mã sản phẩm" />
+            <button type="submit">Tìm kiếm</button>
+          </form>
+          <div class="hero-stats" aria-label="Thống kê cửa hàng">
+            <span><strong>8.200+</strong> đơn hoàn tất</span>
+            <span><strong>1 phút</strong> nhận thông tin</span>
+            <span><strong>4.9/5</strong> đánh giá</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="quick-cats" aria-label="Danh mục nhanh">
+        <a href="#accounts">
+          <span class="cat-icon">A</span>
+          Acc chọn lọc
+          <em>HOT</em>
+        </a>
+        <a href="#items">
+          <span class="cat-icon">S</span>
+          Skin & vật phẩm
+          <em>NEW</em>
+        </a>
+        <a href="#services">
+          <span class="cat-icon">N</span>
+          Nạp & dịch vụ
+          <em>24/7</em>
+        </a>
+        <a href="#orders">
+          <span class="cat-icon">K</span>
+          Kiểm tra đơn
+          <em>FAST</em>
+        </a>
+      </section>
+
+      <section class="account-section" id="account" hidden>
+        <div class="account-tabs" aria-label="Khu vực tài khoản">
+          <button class="account-tab active" type="button" data-menu-action="profile">
+            <span class="tab-icon">i</span>
+            Thông tin tài khoản
+          </button>
+          <button class="account-tab" type="button" data-menu-action="deposit">
+            <span class="tab-icon">+</span>
+            Nạp tiền
+          </button>
+          <button class="account-tab" type="button" data-menu-action="accounts">
+            <span class="tab-icon">a</span>
+            Tài khoản đã mua
+          </button>
+          <button class="account-tab" type="button" data-menu-action="items">
+            <span class="tab-icon">v</span>
+            Vật phẩm đã mua
+          </button>
+        </div>
+
+        <div class="account-dashboard">
+          <aside class="account-card">
+            <div class="avatar-ring">
+              <span data-profile-initials>RZ</span>
+            </div>
+            <h2 data-profile-name>Khách hàng</h2>
+            <p><strong>UID</strong> <span data-profile-uid>Đăng nhập để xem</span></p>
+
+            <div class="account-metrics">
+              <article>
+                <span class="metric-icon">₫</span>
+                <div>
+                  <h3>Số dư tài khoản</h3>
+                  <p data-profile-balance>0 VND</p>
+                </div>
+              </article>
+              <article>
+                <span class="metric-icon purple">✓</span>
+                <div>
+                  <h3>Phân quyền</h3>
+                  <p data-profile-role>Người dùng</p>
+                </div>
+              </article>
+            </div>
+
+            <div class="account-actions">
+              <button type="button" data-open-login>Đổi mật khẩu</button>
+              <button type="button">VIP</button>
+            </div>
+          </aside>
+
+          <div class="profile-panel" data-account-view="profile">
+            <div class="profile-title">
+              <h2>Thông tin cá nhân</h2>
+              <span>Profile</span>
+            </div>
+
+            <form class="profile-form">
+              <div class="field-group">
+                <label>
+                  <span>* Tên đăng nhập</span>
+                  <input name="username" type="text" readonly placeholder="Chưa đăng nhập" />
+                </label>
+                <label>
+                  <span>* Email</span>
+                  <input name="email" type="email" placeholder="Email" />
+                </label>
+                <label>
+                  <span>* Mật khẩu</span>
+                  <div class="password-row">
+                    <input type="password" value="password" readonly />
+                    <button type="button" data-open-login>Đổi mật khẩu</button>
+                  </div>
+                </label>
+                <label>
+                  <span>Zalo</span>
+                  <input name="zalo" type="text" placeholder="Số Zalo" />
+                </label>
+              </div>
+
+              <div class="profile-title profile-subtitle">
+                <h2>Mạng xã hội</h2>
+                <span>Social</span>
+              </div>
+
+              <div class="field-group">
+                <label>
+                  <span>Line</span>
+                  <input name="line" type="text" placeholder="Line ID" />
+                </label>
+                <label>
+                  <span>Facebook</span>
+                  <input name="facebook" type="url" placeholder="Link Facebook" />
+                </label>
+              </div>
+
+              <div class="profile-footer">
+                <p class="profile-message" role="status">
+                  <span></span>
+                  Đăng nhập để đồng bộ thông tin
+                </p>
+                <button class="save-profile" type="submit">Lưu thay đổi</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="deposit-panel" data-account-view="deposit" hidden>
+            <div class="deposit-tabs" aria-label="Chọn hình thức nạp">
+              <button class="deposit-tab active" type="button" data-deposit-method="bank">Nạp ngân hàng</button>
+              <button class="deposit-tab" type="button" data-deposit-method="card">Nạp thẻ cào</button>
+            </div>
+
+            <div class="deposit-content">
+              <div class="deposit-notice">
+                <strong>ℹ Nạp tiền qua chuyển khoản ngân hàng</strong>
+                <p>Hệ thống sẽ tự động cộng tiền sau 2-5 phút. Nạp tối thiểu 10.000đ.</p>
+              </div>
+
+              <div class="deposit-warning">
+                <strong>⚠ Shop không hỗ trợ rút tiền. Khách cân nhắc kĩ rồi hãy nạp.</strong>
+              </div>
+
+              <form class="deposit-form">
+                <div class="deposit-field">
+                  <span>Chọn nhanh số tiền</span>
+                  <div class="quick-amounts">
+                    <button type="button" data-amount="10000">10K</button>
+                    <button type="button" data-amount="20000">20K</button>
+                    <button type="button" data-amount="50000">50K</button>
+                    <button type="button" data-amount="100000">100K</button>
+                    <button type="button" data-amount="200000">200K</button>
+                    <button type="button" data-amount="500000">500K</button>
+                  </div>
+                </div>
+
+                <label class="deposit-field">
+                  <span>Hoặc nhập số tiền</span>
+                  <input name="amount" type="number" min="10000" step="1000" placeholder="Nhập số tiền muốn nạp" />
+                </label>
+
+                <div class="bank-box" data-bank-box>
+                  <div>
+                    <span>Ngân hàng</span>
+                    <strong>MB Bank</strong>
+                  </div>
+                  <div>
+                    <span>Số tài khoản</span>
+                    <strong>0123 456 789</strong>
+                  </div>
+                  <div>
+                    <span>Nội dung</span>
+                    <strong data-deposit-code>RZ NAP UID</strong>
+                  </div>
+                </div>
+
+                <div class="card-box" data-card-box hidden>
+                  <label>
+                    Loại thẻ
+                    <select name="cardType">
+                      <option>Viettel</option>
+                      <option>Mobifone</option>
+                      <option>Vinaphone</option>
+                    </select>
+                  </label>
+                  <label>
+                    Mã thẻ
+                    <input name="cardCode" type="text" placeholder="Nhập mã thẻ" />
+                  </label>
+                  <label>
+                    Serial
+                    <input name="cardSerial" type="text" placeholder="Nhập serial" />
+                  </label>
+                </div>
+
+                <p class="deposit-message" role="status">Chọn số tiền để tạo yêu cầu nạp.</p>
+                <button class="deposit-submit" type="submit">Nạp tiền</button>
+                <button class="deposit-history" type="button">◴ Lịch sử nạp tiền</button>
+              </form>
+            </div>
+          </div>
+
+          <div class="purchased-panel" data-account-view="accounts" hidden>
+            <div class="purchased-title">
+              <h2>Tài khoản đã mua</h2>
+            </div>
+
+            <div class="orders-table" role="table" aria-label="Tài khoản đã mua">
+              <div class="orders-head" role="row">
+                <span role="columnheader">STT</span>
+                <span role="columnheader">Account</span>
+                <span role="columnheader">Bảo hành</span>
+                <span role="columnheader">Chi tiết đơn</span>
+              </div>
+
+              <div class="orders-empty" role="row">
+                <span class="empty-diamond">◇</span>
+                <p>Bạn chưa có đơn tài khoản</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="items-panel" data-account-view="items" hidden>
+            <div class="items-toolbar">
+              <div class="items-notes">
+                <p><span>!</span> Đổi ID khi chờ skin: Hủy đơn, đặt lại, điền ID mới.</p>
+                <p><span>!</span> Khách đặt đơn khi chưa kết bạn đủ 15 ngày vui lòng hủy đặt lại sau khi kết bạn đủ 15 ngày để shop tự động gửi đơn.</p>
+              </div>
+              <select aria-label="Lọc trạng thái vật phẩm">
+                <option>Lọc theo trạng thái</option>
+                <option>Đang xử lý</option>
+                <option>Hoàn tất</option>
+                <option>Đã hủy</option>
+              </select>
+            </div>
+
+            <div class="items-table" role="table" aria-label="Vật phẩm đã mua">
+              <div class="items-head" role="row">
+                <span role="columnheader">STT</span>
+                <span role="columnheader">Vật phẩm</span>
+                <span role="columnheader">Trạng thái</span>
+                <span role="columnheader">Ghi chú</span>
+                <span role="columnheader">Riot ID</span>
+                <span role="columnheader">Chi tiết đơn</span>
+              </div>
+
+              <div class="items-empty" role="row">
+                <div class="empty-folder" aria-hidden="true">
+                  <span></span>
+                </div>
+                <p>Bạn chưa có đơn vật phẩm</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="admin-section" id="admin" hidden>
+        <div class="admin-heading">
+          <div>
+            <p class="eyebrow">Admin</p>
+            <h2>Quản lý account và vật phẩm</h2>
+          </div>
+          <div class="admin-switch">
+            <button class="active" type="button" data-admin-type="accounts">Account</button>
+            <button type="button" data-admin-type="items">Vật phẩm</button>
+          </div>
+        </div>
+
+        <div class="admin-layout">
+          <form class="admin-form">
+            <input name="id" type="hidden" />
+            <label>
+              Tên sản phẩm
+              <input name="title" type="text" placeholder="VD: Acc Cao Thủ 72 tướng" required />
+            </label>
+            <label>
+              Giá
+              <input name="price" type="number" min="0" step="1000" placeholder="1250000" required />
+            </label>
+            <label>
+              Trạng thái
+              <select name="status">
+                <option>Đang bán</option>
+                <option>Đã bán</option>
+                <option>Ẩn</option>
+              </select>
+            </label>
+            <label>
+              Mô tả
+              <textarea name="description" rows="4" placeholder="Rank, skin, tướng, ghi chú vật phẩm..."></textarea>
+            </label>
+            <label>
+              Ảnh chính
+              <input name="image" type="url" placeholder="https://.../anh-account.jpg" />
+            </label>
+            <label>
+              Gallery ảnh chi tiết
+              <textarea name="gallery" rows="3" placeholder="Mỗi dòng một link ảnh"></textarea>
+            </label>
+            <label>
+              Nội dung bài viết chi tiết
+              <textarea name="content" rows="6" placeholder="Viết nội dung giới thiệu, thông tin skin, rank, bảo hành, lưu ý khi mua..."></textarea>
+            </label>
+            <label>
+              Thông tin giao sau mua
+              <textarea name="secret" rows="3" placeholder="Login, mật khẩu, mã vật phẩm hoặc hướng dẫn giao hàng"></textarea>
+            </label>
+            <div class="admin-form-actions">
+              <button class="primary-button" type="submit">Lưu sản phẩm</button>
+              <button type="button" data-admin-reset>Làm mới</button>
+            </div>
+            <p class="admin-message" role="status"></p>
+          </form>
+
+          <div class="admin-table-wrap">
+            <div class="admin-table-head">
+              <span>Tên</span>
+              <span>Giá</span>
+              <span>Trạng thái</span>
+              <span>Thao tác</span>
+            </div>
+            <div class="admin-list" data-admin-list></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="accounts">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Tài khoản</p>
+            <h2>Acc nổi bật hôm nay</h2>
+          </div>
+          <a class="text-link" href="#">Xem tất cả</a>
+        </div>
+
+        <div class="filters" aria-label="Bộ lọc tài khoản">
+          <button class="filter active" data-filter="all">Tất cả</button>
+          <button class="filter" data-filter="rank">Rank cao</button>
+          <button class="filter" data-filter="skin">Nhiều skin</button>
+          <button class="filter" data-filter="budget">Giá tốt</button>
+        </div>
+
+        <div class="product-grid">
+          <p class="storefront-empty" data-account-empty>Chưa có account nào được đăng bán.</p>
+        </div>
+      </section>
+
+      <section class="detail-section" id="product-detail" hidden>
+        <button class="detail-back" type="button" data-detail-close>← Quay lại danh sách</button>
+        <article class="detail-article">
+          <div class="detail-cover">
+            <img data-detail-image src="" alt="" />
+            <span data-detail-status>Đang bán</span>
+          </div>
+          <div class="detail-content">
+            <p class="eyebrow">Bài viết chi tiết</p>
+            <h2 data-detail-title>Thông tin tài khoản</h2>
+            <strong data-detail-price>0đ</strong>
+            <p data-detail-description></p>
+            <div class="detail-info-grid">
+              <div>
+                <span>Mã sản phẩm</span>
+                <strong data-detail-code>RZ-0000</strong>
+              </div>
+              <div>
+                <span>Bảo hành</span>
+                <strong>Hỗ trợ sau mua</strong>
+              </div>
+              <div>
+                <span>Giao hàng</span>
+                <strong>Tự động sau thanh toán</strong>
+              </div>
+            </div>
+            <div class="detail-actions">
+              <button class="primary-button" type="button">Mua tài khoản</button>
+              <button type="button" data-open-login>Đăng nhập để mua</button>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="section split-section" id="items">
+        <div class="promo-panel">
+          <p class="eyebrow">Vật phẩm</p>
+          <h2>Gói skin, thẻ nạp và ưu đãi theo mùa</h2>
+          <p>
+            Các gói được phân loại rõ ràng, trạng thái tồn kho cập nhật theo
+            thời gian thực và có lịch sử đơn để bạn theo dõi.
+          </p>
+          <a class="primary-button" href="#services">Xem dịch vụ</a>
+        </div>
+
+        <div class="item-list">
+          <article>
+            <span>01</span>
+            <div>
+              <h3>Gói skin chọn lọc</h3>
+              <p>Từ 99.000đ, giao mã ngay sau thanh toán.</p>
+            </div>
+          </article>
+          <article>
+            <span>02</span>
+            <div>
+              <h3>Nạp Wild Core</h3>
+              <p>Chiết khấu theo mốc, hỗ trợ kiểm tra trạng thái.</p>
+            </div>
+          </article>
+          <article>
+            <span>03</span>
+            <div>
+              <h3>Combo tân thủ</h3>
+              <p>Acc sạch, nhiều tướng cơ bản, giá mềm.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section service-band" id="services">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Dịch vụ</p>
+            <h2>Quy trình mua nhanh</h2>
+          </div>
+        </div>
+
+        <div class="steps">
+          <article>
+            <strong>1</strong>
+            <h3>Chọn sản phẩm</h3>
+            <p>Lọc theo rank, skin, mức giá hoặc mã acc.</p>
+          </article>
+          <article>
+            <strong>2</strong>
+            <h3>Thanh toán</h3>
+            <p>Chuyển khoản, ví điện tử hoặc mã khuyến mãi.</p>
+          </article>
+          <article>
+            <strong>3</strong>
+            <h3>Nhận thông tin</h3>
+            <p>Thông tin tài khoản được hiển thị trong lịch sử đơn.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section reviews" id="reviews">
+        <div>
+          <p class="eyebrow">Đánh giá</p>
+          <h2>Người mua nói gì?</h2>
+        </div>
+        <div class="review-grid">
+          <blockquote>
+            “Mua xong nhận thông tin rất nhanh, shop hỗ trợ đổi mail kỹ.”
+            <cite>Minh K.</cite>
+          </blockquote>
+          <blockquote>
+            “Giao diện dễ tìm acc, giá chia theo nhóm nên đỡ mất thời gian.”
+            <cite>Anh D.</cite>
+          </blockquote>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer" id="policy">
+      <div>
+        <strong>RiftZone Store</strong>
+        <p>Website demo lấy cảm hứng bố cục shop game, dùng dữ liệu mẫu.</p>
+      </div>
+      <div>
+        <a href="#">Điều khoản</a>
+        <a href="#">Bảo hành</a>
+        <a href="#">Liên hệ</a>
+      </div>
+    </footer>
+
+    <dialog class="login-modal" aria-labelledby="login-title">
+      <div class="auth-shell">
+        <button class="close-modal" type="button" aria-label="Đóng">×</button>
+        <h2 id="login-title">Tài khoản</h2>
+
+        <div class="auth-tabs" role="tablist" aria-label="Chọn đăng nhập hoặc đăng ký">
+          <button class="auth-tab active" type="button" data-auth-tab="login">Đăng nhập</button>
+          <button class="auth-tab" type="button" data-auth-tab="register">Đăng ký</button>
+        </div>
+
+        <form class="auth-form" data-auth-form="login">
+          <label>
+            Email hoặc tên tài khoản
+            <input name="login" type="text" autocomplete="username" placeholder="name@example.com" required />
+          </label>
+          <label>
+            Mật khẩu
+            <input name="password" type="password" autocomplete="current-password" placeholder="••••••••" required />
+          </label>
+          <button class="primary-button" type="submit">Đăng nhập</button>
+        </form>
+
+        <form class="auth-form hidden" data-auth-form="register">
+          <label>
+            Tên tài khoản
+            <input name="username" type="text" autocomplete="username" placeholder="riftplayer" minlength="3" required />
+          </label>
+          <label>
+            Email
+            <input name="email" type="email" autocomplete="email" placeholder="name@example.com" required />
+          </label>
+          <label>
+            Mật khẩu
+            <input name="password" type="password" autocomplete="new-password" placeholder="Tối thiểu 6 ký tự" minlength="6" required />
+          </label>
+          <button class="primary-button" type="submit">Tạo tài khoản</button>
+        </form>
+
+        <p class="auth-message" role="status"></p>
+      </div>
+    </dialog>
+
+    <script src="app.js"></script>
+  </body>
+</html>
